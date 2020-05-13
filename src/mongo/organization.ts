@@ -3,17 +3,24 @@ import * as crypto from 'crypto';
 
 const OrganizationSchema = new mongoose.Schema({
   name: {
-   type: String,
+    type: String,
     required: true
   },
   description: {
     type: String,
-    required: false
+    required: true
   },
-  events: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: false
+  organizationName: {
+    type: String,
+    required: true
   },
+  events: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Event',
+      autopopulate: true
+    }
+  ],
   contacts: {
     type: Object,
     required: false

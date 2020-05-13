@@ -5,7 +5,6 @@ import {Organization} from './interface/organization.interface';
 import {CreateOrganizationDto} from './dto/create-organization.dto';
 import {EventService} from '../event/event.service';
 import {CreateEventDto} from '../event/dto/create-event.dto';
-import { runInNewContext } from 'vm';
 
 @Injectable()
 export class OrganizationService {
@@ -40,16 +39,22 @@ export class OrganizationService {
     const newEvent: CreateEventDto = await this.eventService.create(event);
     return this.organizationModel.update(
       {_id: newEvent.Organization},
-      {$push:{events: newEvent.Organization}}
+      {$push:{events: newEvent._id}}
     );
   }
 
   async login(name: string, password: string):Promise<any>{
     const organization = await this.organizationModel.findOne({name: name});
-    if(organization.validatePassword(password)) {
-      return { name: organization.name, _id: organization._id };
+    if(!organization){
+      return {passwordError: false, usernameError: true}
     }
-    return null;
+    if(organization.validatePassword(password)) {
+      return { name: organization.name, _id: organization._id, passwordError: false, usernameError: false};
+    }
+    return {passwordError: true, usernameError: false}
   };
 
+  async getProfile(userId) {
+    return this.organizationModel.findById(userId);
+  }
 }

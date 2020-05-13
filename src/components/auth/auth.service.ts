@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrganizationService } from '../organization/organization.service';
 import { JwtService } from '@nestjs/jwt';
+import LoginErrorInterface from './interface/loginError.interface'
 
 @Injectable()
 export class AuthService {
@@ -14,10 +15,19 @@ export class AuthService {
   }
 
   async login(user: any) {
-    console.log(user);
-    const payload = { username: user.name, sub: user._id };
+    const report: LoginErrorInterface = user;
+    if(report.usernameError) return Promise.reject('User does not exist');
+    if(report.passwordError) return Promise.reject('Password is not correct');
+    const payload = {
+      username: user.name,
+      sub: user._id
+    };
     return {
       AccessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async getProfile(userId) {
+     return this.organizationService.getProfile(userId);
   }
 }

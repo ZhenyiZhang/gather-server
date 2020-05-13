@@ -9,13 +9,17 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user) ;
+  login(@Request() req, @Res() res) {
+    this.authService.login(req.user)
+        .then(user => {res.send(user)})
+        .catch(err => {
+          res.statusMessage = err;
+          res.status(403).end();});
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Request() req) {
+    return await this.authService.getProfile(req.user.userId);
   }
 }
