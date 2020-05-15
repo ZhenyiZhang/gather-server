@@ -19,6 +19,7 @@ export class OrganizationController {
   @UseGuards(JwtAuthGuard)
   @Post('/newEvent')
   newEvent(@Request() req, @Res() res: Response, @Body() body) {
+    console.log(body);
     const eventDto:CreateEventDto = {...body, Organization: req.user.userId};
     /*after authorized using token*/
     this.organizationService.newEvent(eventDto)

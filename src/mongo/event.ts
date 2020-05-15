@@ -1,34 +1,39 @@
 import * as Mongoose from 'mongoose';
-const repeat = ['weekly', 'biweekly', 'yearly', 'daily', 'monthly', 'none'];
+const repeat = ['Weekly', 'Biweekly', 'Yearly', 'Daily', 'Monthly', 'None'];
 
 const EventSchema = new Mongoose.Schema (
-  {
-    name: {
-      type: String
-    },
-    description: {
-      type: String
-    },
-    start: {
-      type: Date
-    },
-    end: {
-      type: Date
-    },
-    repeat: {
-      type: String,
-      enum: repeat,
-      default: 'none'
-    },
-    contact: {
-      type: Object,
-      required: false
-    },
-    Organization: {
-      type: Mongoose.Schema.Types.ObjectId,
-      required: false
-    },
-  });
+    {
+        name: {
+            type: String,
+            required: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        start: {
+            type: Date,
+            required: true
+        },
+        end: {
+            type: Date,
+            required: true
+        },
+        repeat: {
+            type: String,
+            enum: repeat,
+            default: 'none',
+            required: true
+        },
+        contact: {
+            type: Object,
+            required: false
+        },
+        Organization: {
+            type: Mongoose.Schema.Types.ObjectId,
+            required: false
+        },
+    });
 
 
 export default EventSchema;
