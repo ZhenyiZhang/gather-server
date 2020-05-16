@@ -27,7 +27,11 @@ export class AuthService {
     };
   }
 
-  async getProfile(userId) {
+  async getProfile(userId: string) {
      return this.organizationService.getProfile(userId);
+  }
+
+  async deleteEvent(userId: string, eventId: string) {
+    return this.organizationService.deleteEvent(userId, eventId);
   }
 }

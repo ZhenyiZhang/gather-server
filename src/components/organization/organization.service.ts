@@ -20,7 +20,7 @@ export class OrganizationService {
     });
   };
 
-
+  /*get an organization by id provided in param*/
   async getById(param):Promise<any> {
     const organization: Organization = await this.organizationModel.findById(param.id);
     const temp = Object.assign({}, organization['_doc']);
@@ -35,6 +35,7 @@ export class OrganizationService {
     return newOrganization.save();
   };
 
+  /*add new event to organization*/
   async newEvent(event: CreateEventDto) {
     const newEvent: CreateEventDto = await this.eventService.create(event);
     return this.organizationModel.update(
@@ -43,6 +44,7 @@ export class OrganizationService {
     );
   }
 
+  /*user log in */
   async login(name: string, password: string):Promise<any>{
     const organization = await this.organizationModel.findOne({name: name});
     if(!organization){
@@ -54,7 +56,21 @@ export class OrganizationService {
     return {passwordError: true, usernameError: false}
   };
 
-  async getProfile(userId) {
+/*get profile for authorized user */
+  async getProfile(userId: string) {
     return this.organizationModel.findById(userId);
+  }
+
+  /*delete event for authorized user */
+  async deleteEvent(userId: string, eventId: string) {
+    const updateOrganization = this.organizationModel.update(
+        {_id: userId },
+        {$pull: {events: eventId}}
+    );
+    if(!updateOrganization) {
+      return Promise.reject('event is not owned by user')
+    }
+
+    return this.eventService.deleteEvent(eventId);
   }
 }
