@@ -2,6 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {Model} from 'mongoose';
 import {InjectModel} from '@nestjs/mongoose';
 import {Organization} from './interface/organization.interface';
+import {Event} from '../event/interface/event.interface';
 import {CreateOrganizationDto} from './dto/create-organization.dto';
 import {EventService} from '../event/event.service';
 import {CreateEventDto} from '../event/dto/create-event.dto';
@@ -70,7 +71,11 @@ export class OrganizationService {
     if(!updateOrganization) {
       return Promise.reject('event is not owned by user')
     }
-
     return this.eventService.deleteEvent(eventId);
   }
+
+  async updateEvent(userId: string, eventId: string, eventUpdateData: Event) {
+    return this.eventService.updateEvent(userId, eventId, eventUpdateData);
+  }
+
 }

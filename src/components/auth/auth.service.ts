@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrganizationService } from '../organization/organization.service';
 import { JwtService } from '@nestjs/jwt';
+import {Event} from '../event/interface/event.interface'
 import LoginErrorInterface from './interface/loginError.interface'
 
 @Injectable()
@@ -33,5 +34,9 @@ export class AuthService {
 
   async deleteEvent(userId: string, eventId: string) {
     return this.organizationService.deleteEvent(userId, eventId);
+  }
+
+  async updateEvent(userId: string, eventId: string, eventUpdateData: Event) {
+    return this.organizationService.updateEvent(userId, eventId, eventUpdateData);
   }
 }

@@ -22,4 +22,10 @@ export class EventService {
     return this.EventModel.deleteOne({_id: id});
   };
 
+  async updateEvent(userId: string, eventId: string, updateEventData: Event) {
+    return this.EventModel.findOneAndUpdate(
+        {_id: eventId, Organization: userId},
+        {$set: {...updateEventData}},
+        );
+  };
 }

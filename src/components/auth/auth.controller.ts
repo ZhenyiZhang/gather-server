@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Res,  Request, UseGuards, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Res,  Request, UseGuards, Delete, Body } from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
 import {JwtAuthGuard} from './jwtAuthGuard';
 import {AuthService} from './auth.service';
@@ -31,8 +31,8 @@ export class AuthController {
 
 
   @UseGuards(JwtAuthGuard)
-  @Post('/modifyEvent/:eventId')
-  async modifyEvent(@Request() req, @Param() param) {
-    return this.authService.deleteEvent(req.user.userId,  param.eventId);
+  @Post('/updateEvent/:eventId')
+  async modifyEvent(@Request() req, @Param() param, @Body() eventUpdateData) {
+    return this.authService.updateEvent(req.user.userId,  param.eventId, eventUpdateData);
   }
 }
