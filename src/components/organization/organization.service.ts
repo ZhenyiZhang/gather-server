@@ -21,14 +21,6 @@ export class OrganizationService {
     });
   };
 
-  /*get an organization by id provided in param*/
-  async getById(param):Promise<any> {
-    const organization: Organization = await this.organizationModel.findById(param.id);
-    const temp = Object.assign({}, organization['_doc']);
-    const {password, salt, ...others} = temp;
-    return others;
-  }
-
   /*post controller*/
   async create(CreateOrganization: CreateOrganizationDto):Promise<Organization> {
     const newOrganization = new this.organizationModel(CreateOrganization);
@@ -64,7 +56,7 @@ export class OrganizationService {
 
   /*delete event for authorized user */
   async deleteEvent(userId: string, eventId: string) {
-    const updateOrganization = this.organizationModel.update(
+    const updateOrganization = this.organizationModel.updateOne(
         {_id: userId },
         {$pull: {events: eventId}}
     );
@@ -74,8 +66,33 @@ export class OrganizationService {
     return this.eventService.deleteEvent(eventId);
   }
 
+  /*update a event owned by user*/
   async updateEvent(userId: string, eventId: string, eventUpdateData: Event) {
     return this.eventService.updateEvent(userId, eventId, eventUpdateData);
   }
 
+  async updateProfile(userId: string, update: Organization) {
+    const newProfile = Object.assign({}, update);
+    return this.organizationModel.updateOne(
+        {_id: userId},
+        {...newProfile}, {});
+  }
+
+  /*verify if user already exists*/
+  async verifyUserName(userName: string) {
+    const user = await this.organizationModel.findOne(
+        {name: userName}
+    );
+    if (!user) {return Promise.resolve('ok');}
+    return Promise.reject('User already exist')
+  }
+
+  async getSharedProfile(organizationId: string) {
+    const organizationData = await this.organizationModel.findById(organizationId);
+    if(!organizationData) return Promise.reject('The user does not exist');
+    const organization: Organization = organizationData['_doc'];
+    if(!organization.share) return Promise.reject('The user profile is not shared');
+    const {password, salt, ...others} = organization;
+    return others;
+  }
 }

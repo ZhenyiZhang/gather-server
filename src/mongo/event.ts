@@ -25,13 +25,23 @@ const EventSchema = new Mongoose.Schema (
             default: 'none',
             required: true
         },
-        contact: {
-            type: Object,
+        repeatNeverEnds: {
+            type: Boolean,
+            default: false,
             required: false
+        },
+        repeatEnds: {
+            type: Date,
+            required: false
+        },
+        contacts: {
+            email: String,
+            phone: String,
+            link: String
         },
         Organization: {
             type: Mongoose.Schema.Types.ObjectId,
-            required: false
+            required: false,
         },
     });
 

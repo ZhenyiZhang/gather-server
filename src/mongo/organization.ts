@@ -4,6 +4,7 @@ import * as crypto from 'crypto';
 const OrganizationSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true
   },
   description: {
@@ -21,13 +22,18 @@ const OrganizationSchema = new mongoose.Schema({
       autopopulate: true
     }
   ],
-  contacts: {
-    type: Object,
-    required: false
-  },
+  addOns: [{
+    field: {type: String},
+    value: {type: String}
+    }],
   password: {
     type: String,
     required: true
+  },
+  share: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   salt: String
 });

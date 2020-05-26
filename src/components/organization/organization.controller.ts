@@ -19,12 +19,26 @@ export class OrganizationController {
   @UseGuards(JwtAuthGuard)
   @Post('/newEvent')
   newEvent(@Request() req, @Res() res: Response, @Body() body) {
-    console.log(body);
     const eventDto:CreateEventDto = {...body, Organization: req.user.userId};
     /*after authorized using token*/
     this.organizationService.newEvent(eventDto)
       .then(result => {res.send(result);})
       .catch(err => {res.status(HttpStatus.BAD_REQUEST).send(err)});
+  }
+
+  @Post('/verifyUserName')
+  verifyUserName(@Res() res: Response, @Body() body) {
+    this.organizationService.verifyUserName(body.userName)
+        .then(() => {res.status(200).send()})
+        .catch(() => {res.status(400).send()});
+  };
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/updateProfile')
+  async updateProfile(@Request() req, @Res() res: Response, @Body() body) {
+    this.organizationService.updateProfile(req.user.userId, body)
+        .then(result => {res.send(result);})
+        .catch(err => {res.status(HttpStatus.BAD_REQUEST).send(err)});
   }
   
   @Get()
@@ -34,9 +48,9 @@ export class OrganizationController {
       .catch(err => {res.status(HttpStatus.BAD_REQUEST).send(err)});
   }
 
-  @Get('/:id')
-  async getById(@Param() param, @Res() res: Response) {
-    this.organizationService.getById(param)
+  @Get('/sharedProfile/:userId')
+  async getSharedProfile(@Param() param, @Res() res: Response) {
+    this.organizationService.getSharedProfile(param.userId)
       .then(result => {res.send(result);})
       .catch(err => {res.status(HttpStatus.BAD_REQUEST).send(err)});
   }

@@ -5,10 +5,11 @@ export interface Organization extends Document{
   readonly organizationName: string,
   readonly description: string,
   readonly events: string[],
-  readonly contacts: object,
   readonly password: string,
   readonly salt: string,
   readonly _id: string,
+  readonly share: boolean,
+  readonly addONs? : [{field: string, value: string}],
   setPassword(),
   validatePassword(password:string): boolean;
 }
