@@ -3,16 +3,16 @@ import { JwtModule } from '@nestjs/jwt';
 import OrganizationModule from '../../organization/organization.module';
 import {PassportModule} from '@nestjs/passport';
 import {JwtResetPasswordStrategy} from '../passportStrategies/jwt.resetPassword.strategy';
-import {jwtConstants} from "../constants";
 import { ResetPasswordService } from './reset-password.service';
 import { ResetPasswordController } from './reset-password.controller';
+import EnvVariables from "../../../EnvVariables";
 
 @Module({
   imports: [
       OrganizationModule,
       PassportModule,
       JwtModule.register({
-            secret: jwtConstants.secret,
+            secret: EnvVariables.PASSPORT_SECRET,
             signOptions: { expiresIn: '10min' },
           })],
   providers: [ResetPasswordService, JwtResetPasswordStrategy],

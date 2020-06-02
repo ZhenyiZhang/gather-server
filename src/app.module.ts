@@ -5,12 +5,11 @@ import OrganizationModule from './components/organization/organization.module';
 import {AuthModule} from './components/auth/auth.module';
 import {ResetPasswordModule} from './components/auth/reset-password/reset-password.module'
 import { MongooseModule } from '@nestjs/mongoose';
-require('dotenv').config({path: '/Users/zhenyizhang/Documents/Project.nosync/gather-server/process.env'});
-const DB_URL = process.env.DB_URL;
+import EnvVariables from "./EnvVariables";
 
 
 @Module({
-  imports: [MongooseModule.forRoot(DB_URL, {
+  imports: [MongooseModule.forRoot(EnvVariables.DB_URL, {
     connectionFactory: (connection) => {
       connection.plugin(require('mongoose-autopopulate'));
       return connection;
