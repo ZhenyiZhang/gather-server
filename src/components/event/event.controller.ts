@@ -1,6 +1,5 @@
-import { Controller, Get, Body, Post, Param, Res, HttpStatus} from '@nestjs/common';
-import {EventService} from './Event.service';
-import {CreateEventDto} from './dto/create-Event.dto';
+import { Controller, Get, Res, HttpStatus} from '@nestjs/common';
+import {EventService} from './event.service';
 import {Response} from 'express';
 
 @Controller('Event')
