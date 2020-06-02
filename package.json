@@ -81,7 +81,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "engine": {
-    "node": "12.16.1"
+  "engines": {
+    "node": "12.16.x"
   }
 }
