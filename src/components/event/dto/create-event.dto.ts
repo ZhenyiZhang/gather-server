@@ -13,5 +13,6 @@ export class CreateEventDto {
     link: string,
     location: string
   };
+  readonly repeatExceptions?: Date[];
   readonly Organization: string;
 }

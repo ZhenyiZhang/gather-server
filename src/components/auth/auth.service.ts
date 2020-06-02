@@ -36,6 +36,10 @@ export class AuthService {
     return this.organizationService.deleteEvent(userId, eventId);
   }
 
+  async logout(userId: string) {
+    return this.organizationService.logout(userId);
+  }
+
   async updateEvent(userId: string, eventId: string, eventUpdateData: Event) {
     return this.organizationService.updateEvent(userId, eventId, eventUpdateData);
   }

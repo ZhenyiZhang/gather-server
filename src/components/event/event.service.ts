@@ -22,6 +22,14 @@ export class EventService {
     return this.EventModel.deleteOne({_id: id});
   };
 
+  async addEventException(eventId: string, date: Date) {
+    console.log(date);
+    return this.EventModel.findOneAndUpdate(
+        {_id: eventId},
+        {$push: {repeatExceptions: new Date(date)}},
+    );
+  };
+
   async updateEvent(userId: string, eventId: string, updateEventData: Event) {
     return this.EventModel.findOneAndUpdate(
         {_id: eventId, Organization: userId},

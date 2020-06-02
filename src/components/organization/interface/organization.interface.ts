@@ -9,7 +9,8 @@ export interface Organization extends Document{
   readonly salt: string,
   readonly _id: string,
   readonly share: boolean,
-  readonly addONs? : [{field: string, value: string}],
+  readonly email: string,
+  readonly login: boolean,
   setPassword(),
   validatePassword(password:string): boolean;
 }

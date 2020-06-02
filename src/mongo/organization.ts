@@ -22,10 +22,10 @@ const OrganizationSchema = new mongoose.Schema({
       autopopulate: true
     }
   ],
-  addOns: [{
-    field: {type: String},
-    value: {type: String}
-    }],
+  email: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     required: true
@@ -33,6 +33,10 @@ const OrganizationSchema = new mongoose.Schema({
   share: {
     type: Boolean,
     required: true,
+    default: false
+  },
+  login: {
+    type: Boolean,
     default: false
   },
   salt: String

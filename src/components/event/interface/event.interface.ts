@@ -14,5 +14,6 @@ export interface Event extends Document{
     link: string,
     location: string
   },
+  readonly repeatExceptions?: Date[],
   readonly Organization: string,
 }

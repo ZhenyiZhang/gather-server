@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Post, Res,  Request, UseGuards, Delete, Body } from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
-import {JwtAuthGuard} from './jwtAuthGuard';
 import {AuthService} from './auth.service';
 
 @Controller('auth')
@@ -17,20 +16,28 @@ export class AuthController {
           res.status(403).end();});
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Get('/profile')
   async getProfile(@Request() req) {
     return this.authService.getProfile(req.user.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/logout')
+  async logOut(@Request() req, @Res() res) {
+    this.authService.logout(req.user.userId)
+        .then(() => {res.status(200).send('user logged out')})
+        .catch(err => {res.status(403).send(err);})
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/deleteEvent/:eventId')
   async deleteEvent(@Request() req, @Param() param) {
     return this.authService.deleteEvent(req.user.userId,  param.eventId);
   }
 
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Post('/updateEvent/:eventId')
   async modifyEvent(@Request() req, @Param() param, @Body() eventUpdateData) {
     return this.authService.updateEvent(req.user.userId,  param.eventId, eventUpdateData);

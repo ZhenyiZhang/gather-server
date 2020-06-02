@@ -39,6 +39,10 @@ const EventSchema = new Mongoose.Schema (
             phone: String,
             link: String
         },
+        repeatExceptions: {
+            type: [Date],
+            default: [],
+        },
         Organization: {
             type: Mongoose.Schema.Types.ObjectId,
             required: false,
