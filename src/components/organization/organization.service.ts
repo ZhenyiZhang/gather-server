@@ -33,12 +33,20 @@ export class OrganizationService {
 
     /*user log in */
     async login(name: string, password: string): Promise<any> {
-        const organization = await this.organizationModel.findOneAndUpdate(
+        let organization = await this.organizationModel.findOneAndUpdate(
             {name: name},
             {login: true}
         );
         if (!organization) {
-            return {passwordError: false, usernameError: true}
+            /*check if user used email to log in*/
+            organization = await this.organizationModel.findOneAndUpdate(
+                {email: name},
+                {login: true}
+            );
+            /*user does not exist*/
+            if(!organization) {
+                return {passwordError: false, usernameError: true}
+            }
         }
         if (organization.validatePassword(password)) {
             return {name: organization.name, _id: organization._id, passwordError: false, usernameError: false};
