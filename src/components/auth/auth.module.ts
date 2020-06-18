@@ -13,7 +13,7 @@ import EnvVariables from "../../EnvVariables";
     PassportModule,
     JwtModule.register({
       secret: EnvVariables.PASSPORT_SECRET,
-      // signOptions: { expiresIn: '60min' },
+      signOptions: { expiresIn: '7day' },
     })],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
