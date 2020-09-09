@@ -1,3 +1,3 @@
-const clientURL = 'http://localhost:3002';
+const clientURL = 'https://gather-client.herokuapp.com';
 
 export default clientURL;
