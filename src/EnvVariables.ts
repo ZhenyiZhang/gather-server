@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: '/Users/zhenyizhang/Documents/Project.nosync/gather-server/process.env'});
 
 const EnvVariables = {
     MAIL_NAME: process.env.MAIL_NAME,
