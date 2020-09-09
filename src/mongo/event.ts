@@ -37,7 +37,8 @@ const EventSchema = new Mongoose.Schema (
         contacts: {
             email: String,
             phone: String,
-            link: String
+            link: String,
+            location: String
         },
         repeatExceptions: {
             type: [Date],
