@@ -120,14 +120,14 @@ export class OrganizationService {
         if(userEmail) return Promise.reject('Email has been registered');
     }
 
+    /*reset password with code*/
     async resetPassword(password: string, email: string) {
         const organization: Organization = await this.organizationModel.findOne({email: email});
         const organizationData: CreateOrganizationDto = {...organization, password: password};
         const organizationUpdate = new this.organizationModel(organizationData);
         organizationUpdate.setPassword();
         return this.organizationModel.update({email: email},
-            {
-                password: organizationUpdate.password,
+            {   password: organizationUpdate.password,
                 salt: organizationUpdate.salt
             });
     }

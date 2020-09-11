@@ -14,8 +14,7 @@ export class JwtResetPasswordStrategy extends PassportStrategy(Strategy, 'passwo
     }
 
     async validate(payload: any) {
-        return {email: payload.email
-        };
+        return {email: payload.email};
     }
 
 }
