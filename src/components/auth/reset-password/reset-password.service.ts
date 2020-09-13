@@ -43,7 +43,9 @@ export class ResetPasswordService {
                 rejectUnauthorized: false
             }
         });
+        /*link that includes reset token expires in 10 min*/
         const resetLink = clientURL + '/reset/' + ResetToken + '';
+        /*send email which contains the link*/
         const mailOptions = {
             from: EnvVariables.MAIL_NAME,
             to: email,
