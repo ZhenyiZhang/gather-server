@@ -73,11 +73,12 @@ export class OrganizationService {
         }
         const organization: OrganizationPopulate = (await this.organizationModel.findById(userId))['_doc'];
         /*cache profile*/
-        this.cacheService.store('/profile/', userId, organization)
-          .then(() => {console.log('Data has been cached')})
+        // console.log(organization);
+        this.cacheService.storeOrganization('/profile/', userId, organization)
+          .then(() => {console.log('');})
           .catch(err => {console.log(err)});
         if(organization.login) return organization;
-        return Promise.reject('user has logged out');
+        return Promise.reject('User has logged out');
     };
 
 

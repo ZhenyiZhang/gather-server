@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {OrganizationPopulate} from '../organization/interface/organization.populate.interface'
+import {Event} from '../event/interface/event.interface';
 import * as nodeCache from 'node-cache';
 
 @Injectable()
@@ -11,8 +12,10 @@ export class CacheService {
     this.cache = new nodeCache();
   }
 
-  async store(path: string, key: string, body: any) {
-    return this.cache.set(path + key, body);
+  async storeOrganization(path: string, key: string, body: OrganizationPopulate) {
+    const bodyCopy = JSON.parse(JSON.stringify(body));
+    this.cache.set(path + key, bodyCopy);
+    return this.cache.get(path + key);
   }
 
   getOrganizationProfile(path: string, key: string): OrganizationPopulate {
