@@ -68,7 +68,7 @@ export class OrganizationService {
         /*check if data has been cached*/
         if(this.cacheService.has('/profile/', userId)) {
             const profile: OrganizationPopulate =  this.cacheService.getOrganizationProfile('/profile/', userId);
-            if(profile) return;
+            if(profile) return profile;
             await this.cacheService.delete('/profile/', userId);
         }
         const organization: OrganizationPopulate = (await this.organizationModel.findById(userId))['_doc'];
