@@ -67,7 +67,9 @@ export class OrganizationService {
     async getProfile(userId: string) {
         /*check if data has been cached*/
         if(this.cacheService.has('/profile/', userId)) {
-            return this.cacheService.get('/profile/', userId);
+            const profile: OrganizationPopulate =  this.cacheService.getOrganizationProfile('/profile/', userId);
+            if(profile) return;
+            await this.cacheService.delete('/profile/', userId);
         }
         const organization: OrganizationPopulate = (await this.organizationModel.findById(userId))['_doc'];
         /*cache profile*/
@@ -81,7 +83,6 @@ export class OrganizationService {
 
     /*delete event for authorized user */
     async deleteEvent(userId: string, eventId: string) {
-        
         const updateOrganization = this.organizationModel.findOneAndUpdate(
             {_id: userId},
             {$pull: {events: eventId}}

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import {OrganizationPopulate} from '../organization/interface/organization.populate.interface'
 import * as nodeCache from 'node-cache';
 
 @Injectable()
@@ -14,16 +15,8 @@ export class CacheService {
     return this.cache.set(path + key, body);
   }
 
-  async get(path: string, key: string) {
-    return new Promise((resolve, reject) => {
-        const value = this.cache.get(path + key);
-        if(!value) {
-          reject(new Error('The key is invalid'));
-          return;
-        }
-        resolve(value);
-      }
-    );
+  getOrganizationProfile(path: string, key: string): OrganizationPopulate {
+    return this.cache.get(path + key);
   }
 
   has(path: string, key: string) {
@@ -44,10 +37,6 @@ export class CacheService {
       reject(new Error('Data has not been deleted successfully'));
       }
     );
-  }
-
-  flush() {
-    this.cache.flushAll();
   }
 
 }
