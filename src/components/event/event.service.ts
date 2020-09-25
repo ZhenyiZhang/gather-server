@@ -14,10 +14,6 @@ export class EventService {
     return newEvent.save();
   };
 
-  async getAll():Promise<Event[]> {
-    return this.EventModel.find();
-  };
-
   async deleteEvent(id: string):Promise<any> {
     return this.EventModel.deleteOne({_id: id});
   };

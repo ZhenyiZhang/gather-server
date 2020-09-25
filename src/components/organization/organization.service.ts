@@ -6,13 +6,14 @@ import {OrganizationPopulate} from "./interface/organization.populate.interface"
 import {Event} from '../event/interface/event.interface';
 import {CreateOrganizationDto} from './dto/create-organization.dto';
 import {EventService} from '../event/event.service';
+import {CacheService} from '../cache/cache.service';
 import {CreateEventDto} from '../event/dto/create-event.dto';
 
 @Injectable()
 export class OrganizationService {
     constructor(
         @InjectModel('Organization') private organizationModel: Model<Organization>,
-        private eventService: EventService) {
+        private eventService: EventService, private cacheService: CacheService) {
     }
 
     /*create new account controller*/
@@ -64,7 +65,15 @@ export class OrganizationService {
 
     /*get profile for authorized user */
     async getProfile(userId: string) {
+        /*check if data has been cached*/
+        if(this.cacheService.has('/profile/', userId)) {
+            return this.cacheService.get('/profile/', userId);
+        }
         const organization: OrganizationPopulate = (await this.organizationModel.findById(userId))['_doc'];
+        /*cache profile*/
+        this.cacheService.store('/profile/', userId, organization)
+          .then(() => {console.log('Data has been cached')})
+          .catch(err => {console.log(err)});
         if(organization.login) return organization;
         return Promise.reject('user has logged out');
     };
@@ -72,6 +81,7 @@ export class OrganizationService {
 
     /*delete event for authorized user */
     async deleteEvent(userId: string, eventId: string) {
+        
         const updateOrganization = this.organizationModel.findOneAndUpdate(
             {_id: userId},
             {$pull: {events: eventId}}
