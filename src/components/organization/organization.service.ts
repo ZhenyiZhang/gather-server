@@ -73,7 +73,7 @@ export class OrganizationService {
         }
         const response: any = (await this.organizationModel.findById(userId))['_doc'];
         delete response.password;
-        delete response.salty;
+        delete response.salt;
         const organization: OrganizationPopulate = response;
         /*cache profile*/
         // console.log(organization);
