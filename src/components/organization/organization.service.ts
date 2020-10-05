@@ -71,7 +71,10 @@ export class OrganizationService {
             if(profile) return profile;
             await this.cacheService.delete('/profile/', userId);
         }
-        const organization: OrganizationPopulate = (await this.organizationModel.findById(userId))['_doc'];
+        const response: any = (await this.organizationModel.findById(userId))['_doc'];
+        delete response.password;
+        delete response.salty;
+        const organization: OrganizationPopulate = response;
         /*cache profile*/
         // console.log(organization);
         this.cacheService.storeOrganization('/profile/', userId, organization)
